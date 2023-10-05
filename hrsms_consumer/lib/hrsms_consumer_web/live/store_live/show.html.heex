@@ -1,0 +1,56 @@
+<.header>
+  Store <%= @store.id %>
+  <:subtitle>This is a store record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/stores/#{@store}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit store</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Location"><%= @store.location %></:item>
+  <:item title="Store num"><%= @store.store_num %></:item>
+</.list>
+<table id="products">
+  <thead>
+    <tr>
+      <th>Product name</th>
+      <th>Vendor name</th>
+      <th>Wholesale</th>
+      <th>Retail</th>
+      <th>Inventory</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= for product <- @store.products do %>
+      <tr>
+        <td><%= product.product_name %></td>
+        <td><%= product.vendor_name %></td>
+        <td><%= product.wholesale %></td>
+        <td><%= product.retail %></td>
+        <td><%= product.inventory %></td>
+        <td>
+          <div class="sr-only">
+            <.link navigate={~p"/products/#{product}"}>Show</.link>
+          </div>
+          <.link patch={~p"/products/#{product}/edit"}>Edit</.link>
+          <a href="#" phx-click={JS.push("delete", value: %{id: product.id})} data-confirm="Are you sure?">Delete</a>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<.back navigate={~p"/stores"}>Back to stores</.back>
+
+<.modal :if={@live_action == :edit} id="store-modal" show on_cancel={JS.patch(~p"/stores/#{@store}")}>
+  <.live_component
+    module={HrsmsConsumerWeb.StoreLive.FormComponent}
+    id={@store.id}
+    title={@page_title}
+    action={@live_action}
+    store={@store}
+    patch={~p"/stores/#{@store}"}
+  />
+</.modal>

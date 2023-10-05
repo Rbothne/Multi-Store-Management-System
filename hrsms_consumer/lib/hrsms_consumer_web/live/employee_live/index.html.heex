@@ -1,0 +1,13 @@
+<.header>
+    Employees
+</.header>
+
+<.table id="employees" rows={@streams.employees}>
+<:col :let={{_id,employee}} label="Emp"><%= employee.employee_id %></:col>
+<:col :let={{_id,employee}} label="last"><%= employee.last %></:col>
+<:col :let={{_id,employee}} label="First"><%= employee.first %></:col>
+<:col :let={{_id,employee}} label="Date of Hire"><%= employee.date_of_hire %></:col>
+<:col :let={{_id,employee}} label="Deparment"><%= employee.department %></:col>
+
+</.table>
+
